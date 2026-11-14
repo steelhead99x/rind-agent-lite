@@ -1,0 +1,15 @@
+[package]
+name = "rind-agent-lite"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+license = "Apache-2.0 OR ISC OR MIT-0"
+description = "Load and check short skills for working on rind."
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "rind-agent-lite"
+path = "src/main.rs"
