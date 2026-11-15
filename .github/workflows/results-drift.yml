@@ -1,0 +1,46 @@
+# SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT-0
+name: results-drift
+
+on:
+  schedule:
+    - cron: "17 14 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: results-drift
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - name: Record rind-results' files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/results-drift.sh
+      - name: Open a PR when they changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- skills/results/upstream.txt; then
+            echo "no drift"; exit 0
+          fi
+          if [ -n "$(gh pr list --head results-drift --state open --json number --jq '.[].number')" ]; then
+            echo "a drift PR is already open"; exit 0
+          fi
+          changed=$(git diff -U0 -- skills/results/upstream.txt | grep '^+[^+#]' | cut -c2- | cut -d' ' -f1 | sed 's/^/- `/; s/$/`/')
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c results-drift
+          git add skills/results/upstream.txt skills/results/upstream.txt.commit
+          git commit -m "chore(results): record rind-results drift"
+          git push --force origin results-drift
+          printf 'rind-results changed files that `skills/results/SKILL.md` describes:\n\n%s\n\nRead those files at `%s` and update the skill to match before merging.\n' \
+            "$changed" "$(cat skills/results/upstream.txt.commit)" > /tmp/body.md
+          gh pr create --base main --head results-drift --title "chore(results): rind-results drift" --body-file /tmp/body.md

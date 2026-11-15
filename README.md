@@ -20,6 +20,7 @@ checked against
 | [`bench`](skills/bench/SKILL.md) | You are measuring rind on a host or a board. |
 | [`crypto-review`](skills/crypto-review/SKILL.md) | You are reviewing a cryptography change. |
 | [`contribute`](skills/contribute/SKILL.md) | You are preparing a change to send upstream. |
+| [`results`](skills/results/SKILL.md) | You are reading or adding results or quests in rind-results. |
 
 ## Commit pin
 
@@ -34,6 +35,14 @@ cargo run --locked --quiet -- list
 ```
 
 The command reads this tree. It does not fetch rind or run a build.
+
+## rind-results drift
+
+`skills/results/upstream.txt` records the sha256 of the rind-results files
+that the `results` skill describes. `.github/workflows/results-drift.yml`
+runs every week. When one of those files changes, it opens a PR from
+`results-drift` that updates the record and lists what changed. That PR
+needs the skill brought up to date before it merges.
 
 ## License
 
