@@ -1,4 +1,4 @@
-//! Command line for the commit-pin check.
+//! Command line for the commit-pin check and the upstream gate.
 
 #![forbid(unsafe_code)]
 
@@ -6,11 +6,13 @@ use std::env;
 use std::path::PathBuf;
 use std::process::ExitCode;
 
-use rind_pin_check::inspect;
+use rind_pin_check::{check_gate, inspect};
 
 const USAGE: &str = "\
 usage: rind-pin-check [DIR]
-       rind-pin-check list [DIR]";
+       rind-pin-check list [DIR]
+
+Checks the README commit pin and the upstream submission gate.";
 
 enum Args {
     Help,
@@ -41,6 +43,7 @@ fn main() -> ExitCode {
         },
     };
     let report = inspect(&root);
+    let gate = check_gate(&root);
     if list {
         for citation in &report.citations {
             println!(
@@ -57,8 +60,17 @@ fn main() -> ExitCode {
     for error in &report.errors {
         eprintln!("{error}");
     }
-    if !report.errors.is_empty() {
+    for error in &gate.errors {
+        eprintln!("{error}");
+    }
+    if !report.errors.is_empty() || !gate.errors.is_empty() {
         return ExitCode::FAILURE;
+    }
+    if let Some(path) = &gate.canonical {
+        println!("upstream-gate {path}");
+        for file in &gate.submitting {
+            println!("upstream-submitting {file}");
+        }
     }
     if let Some(pin) = &report.pin {
         println!("pin {} {} {}/{}", pin.sha, pin.label, pin.owner, pin.repo);

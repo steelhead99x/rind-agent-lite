@@ -46,3 +46,5 @@ flash back and check its sha256 against the backup.
 
 A board number is a measurement of that board. Keep it out of the host
 report unless `admin/bench-report` already lists that machine.
+
+Upstream submission follows the [upstream gate](../contribute/SKILL.md#upstream-gate).

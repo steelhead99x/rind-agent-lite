@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 rust-version = "1.74"
 license = "Apache-2.0 OR ISC OR MIT-0"
-description = "Check that every rind commit link uses the README pin."
+description = "Check rind commit links and the upstream submission gate."
 repository = "https://github.com/steelhead99x/rind-agent-lite"
 publish = false
 

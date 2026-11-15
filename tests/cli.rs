@@ -36,7 +36,16 @@ fn checks_this_repository_from_a_subdirectory() {
         String::from_utf8_lossy(&output.stderr)
     );
     let stdout = String::from_utf8(output.stdout).unwrap();
-    assert_eq!(stdout, format!("pin {SHA} acc61b3 kixel-ai/rind\n"));
+    assert_eq!(
+        stdout,
+        format!(
+            "upstream-gate skills/contribute/SKILL.md\n\
+             upstream-submitting README.md\n\
+             upstream-submitting skills/contribute/SKILL.md\n\
+             upstream-submitting skills/test/SKILL.md\n\
+             pin {SHA} acc61b3 kixel-ai/rind\n"
+        )
+    );
 }
 
 #[test]
@@ -52,6 +61,7 @@ fn lists_citations_for_an_explicit_directory() {
     assert!(stdout.contains(&format!(
         "skills/bench/SKILL.md:18 commit kixel-ai/rind {SHA}"
     )));
+    assert!(stdout.contains("upstream-gate skills/contribute/SKILL.md\n"));
     assert!(stdout.ends_with(&format!("pin {SHA} acc61b3 kixel-ai/rind\n")));
 }
 
@@ -75,6 +85,35 @@ fn fails_on_a_short_commit_link() {
     let stderr = String::from_utf8(output.stderr).unwrap();
     assert!(stderr.contains("skills/note.md:1:"));
     assert!(stderr.contains("not a full lowercase commit SHA"));
+    let _ = fs::remove_dir_all(&dir);
+}
+
+#[test]
+fn fails_when_a_skill_submits_without_the_gate() {
+    let dir = scratch();
+    fs::write(
+        dir.join("README.md"),
+        format!("[`acc61b3`](https://github.com/kixel-ai/rind/commit/{SHA})\n"),
+    )
+    .unwrap();
+    fs::create_dir_all(dir.join("skills/contribute")).unwrap();
+    fs::write(
+        dir.join("skills/contribute/SKILL.md"),
+        "---\nname: contribute\ndescription: Use when preparing a rind change to send upstream.\n---\n\nOpen a pull request.\n",
+    )
+    .unwrap();
+    let output = exe().arg(&dir).output().unwrap();
+    assert_eq!(output.status.code(), Some(1));
+    assert!(output.stdout.is_empty());
+    let stderr = String::from_utf8(output.stderr).unwrap();
+    assert!(
+        stderr.contains("upstream gate paragraph is missing"),
+        "{stderr}"
+    );
+    assert!(
+        stderr.contains("skills/contribute/SKILL.md: submits upstream and does not state"),
+        "{stderr}"
+    );
     let _ = fs::remove_dir_all(&dir);
 }
 

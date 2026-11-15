@@ -24,3 +24,5 @@ Read these before changing code:
 
 Also read any `AGENTS.md` nested under the files you change. Where this
 skill and those files disagree, rind wins.
+
+Upstream submission follows the [upstream gate](../contribute/SKILL.md#upstream-gate).

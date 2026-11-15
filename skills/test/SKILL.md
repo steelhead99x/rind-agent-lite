@@ -18,6 +18,8 @@ crates that depend on those changes. `just ci` is the same gate with
 missing tools treated as failures. rind's `CONTRIBUTING.md` says to run
 `just ci` before every push. `just gate` runs that gate over every crate.
 
+Upstream submission follows the [upstream gate](../contribute/SKILL.md#upstream-gate).
+
 Initialize `thirdparty/cavp`, `thirdparty/cctv`, and
 `thirdparty/wycheproof` first, or the gate stops early.
 
