@@ -10,6 +10,19 @@ and
 [`CONTRIBUTING.md`](https://github.com/kixel-ai/rind/blob/acc61b3892ceb6afecfa96c94132bf6e35bbf1fb/CONTRIBUTING.md)
 before opening a pull request. Pull requests target `main`.
 
+## Upstream gate
+
+Nothing is submitted upstream (no pull request, issue, comment, or push
+to kixel-ai/rind or any other upstream) until a second independent
+scored review of the head commit scores 9 or 10 with zero high, medium,
+or low findings. After any fix, the review runs again on the new head.
+The score, the reviewer, the head SHA, and the findings are recorded in
+the pull request body. An explicit OK is still required on top of that
+review.
+
+Run rind's checks as its docs state them. Sending that work upstream
+follows this gate.
+
 1. Branch from current `main`. One problem per branch.
 2. Keep the `low` / `mid` / `high` layering. Shape a public API so
    misuse fails to compile.

@@ -22,3 +22,5 @@ selects. The recipes are in the `justfile`.
 One backend compiles per target. A missing CPU feature is an error that
 names the feature. Do not add a runtime fallback. The layering is
 `low`, `mid`, and `high`, as `ARCHITECTURE.md` describes.
+
+Upstream submission follows the [upstream gate](../contribute/SKILL.md#upstream-gate).

@@ -21,6 +21,8 @@ checked against
 | [`crypto-review`](skills/crypto-review/SKILL.md) | You are reviewing a cryptography change. |
 | [`contribute`](skills/contribute/SKILL.md) | You are preparing a change to send upstream. |
 
+Upstream submission follows the [upstream gate](skills/contribute/SKILL.md#upstream-gate).
+
 ## Commit pin
 
 `rind-pin-check` reads the rind commit in this README. The link text is a
@@ -33,6 +35,8 @@ cargo run --locked --quiet
 cargo run --locked --quiet -- list
 ```
 
+The command also checks the upstream gate. Each skill that submits
+upstream contains the gate paragraph or links to it as the upstream gate.
 The command reads this tree. It does not fetch rind or run a build.
 
 ## License

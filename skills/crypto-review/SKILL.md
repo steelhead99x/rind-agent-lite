@@ -32,3 +32,5 @@ On every path the change touches:
 
 A number that will be published comes from `admin/bench-report`, not
 from a bare `cargo bench`. Record the host and the date.
+
+Upstream submission follows the [upstream gate](../contribute/SKILL.md#upstream-gate).
