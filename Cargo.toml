@@ -1,0 +1,16 @@
+[package]
+name = "rind-pin-check"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.74"
+license = "Apache-2.0 OR ISC OR MIT-0"
+description = "Check that every rind commit link uses the README pin."
+repository = "https://github.com/steelhead99x/rind-agent-lite"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "rind-pin-check"
+path = "src/main.rs"
