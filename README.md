@@ -21,6 +21,20 @@ checked against
 | [`crypto-review`](skills/crypto-review/SKILL.md) | You are reviewing a cryptography change. |
 | [`contribute`](skills/contribute/SKILL.md) | You are preparing a change to send upstream. |
 
+## Commit pin
+
+`rind-pin-check` reads the rind commit in this README. The link text is a
+7 to 40 character hex prefix of the full SHA. Every `commit`, `blob`, and
+`tree` link under this directory must use that same owner, repository, and
+SHA.
+
+```shell
+cargo run --locked --quiet
+cargo run --locked --quiet -- list
+```
+
+The command reads this tree. It does not fetch rind or run a build.
+
 ## License
 
 Apache-2.0, ISC, or MIT-0, at your option. See [`LICENSE`](LICENSE).
